@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package (dev extras)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      # Offline only — never set XAI_API_KEY / GROK_API_KEY in this job.
+      - name: Unit tests (no live API)
+        env:
+          # Explicitly clear keys so accidental org secrets cannot enable live calls.
+          XAI_API_KEY: ""
+          GROK_API_KEY: ""
+          XAI_KEY: ""
+        run: |
+          python test_grok_session.py
+          python test_ui_api.py
+          python test_diy_loop.py
+          python examples/quickstart_demo.py --mock

@@ -1,5 +1,7 @@
 # TokenOptimizer
 
+[![CI](https://github.com/manhatton31-svg/token-optimizer/actions/workflows/ci.yml/badge.svg)](https://github.com/manhatton31-svg/token-optimizer/actions/workflows/ci.yml)
+
 **Cut multi-turn Grok agent tokens ~90%+ and meter cost to your real xAI bill.**
 
 Naive agents resend full history, tool dumps, and whole files every turn. TokenOptimizer compacts context, applies Grok profiles (frontier → bulk), and locks dollars to provider `cost_in_usd_ticks` (≥ 99.5%).
