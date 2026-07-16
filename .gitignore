@@ -1,0 +1,57 @@
+# Secrets & local env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+.venv/
+venv/
+ENV/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.tox/
+
+# Local calibration & ledgers (per-machine; do not publish account totals)
+calibration_ledger.jsonl
+calibration_baseline.json
+# Keep calibration_state.json schema examples out of force-push accidents;
+# default: ignore user-specific locks if you copy secrets into notes.
+# Public repo may ship a redacted calibration_state — override with:
+#   git add -f calibration_state.json
+ui/_exports/
+matrix_artifacts/
+examples/_last_session.jsonl
+session_audit.jsonl
+*.jsonl.bak
+
+# A/B last-run dumps (regenerable; can contain account-specific totals)
+ab_*_last.json
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Misc
+*.log
+.cache/

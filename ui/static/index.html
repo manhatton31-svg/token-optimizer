@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TokenOptimizer — Grok</title>
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --panel: #12161f;
+      --panel2: #1a2030;
+      --border: #2a3348;
+      --text: #e8ecf4;
+      --muted: #8b95a8;
+      --accent: #7c5cff;
+      --accent2: #3dd6c6;
+      --ok: #3dd68c;
+      --warn: #f0b429;
+      --bad: #f07178;
+      --chip: #222a3d;
+      --radius: 12px;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: radial-gradient(1200px 600px at 10% -10%, #1a1040 0%, transparent 50%),
+                  radial-gradient(900px 500px at 100% 0%, #0d2a2a 0%, transparent 45%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 13, 18, 0.85);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: grid; place-items: center; font-weight: 700; font-size: 0.85rem;
+    }
+    h1 { font-size: 1.05rem; margin: 0; font-weight: 600; }
+    .sub { color: var(--muted); font-size: 0.8rem; margin-top: 0.15rem; }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem 3rem;
+      display: grid;
+      gap: 1rem;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 860px) {
+      .grid2 { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+    }
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .providers {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    .chip.active { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(124,92,255,0.35); }
+    .chip.soon { opacity: 0.55; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--muted);
+    }
+    .dot.on { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+    .dot.soon { background: var(--warn); }
+    .dot.off { background: var(--bad); }
+    .row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    label { font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 0.25rem; }
+    select, textarea, input[type="text"] {
+      width: 100%;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.55rem 0.7rem;
+      font: inherit;
+    }
+    textarea { min-height: 110px; resize: vertical; font-family: var(--font); }
+    .field { margin-bottom: 0.75rem; }
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 8px;
+      padding: 0.55rem 0.9rem;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+    }
+    button:hover { filter: brightness(1.08); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    button.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    button.ghost { background: var(--panel2); color: var(--text); }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+    .meters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.5rem;
+    }
+    .meter {
+      background: var(--panel2);
+      border-radius: 8px;
+      padding: 0.55rem 0.65rem;
+      border: 1px solid var(--border);
+    }
+    .meter .k { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .meter .v { font-family: var(--mono); font-size: 0.95rem; margin-top: 0.15rem; }
+    .reply {
+      white-space: pre-wrap;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem;
+      min-height: 80px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .status-pill {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .status-pill.ok { color: var(--ok); border-color: rgba(61,214,140,0.4); }
+    .status-pill.bad { color: var(--bad); border-color: rgba(240,113,120,0.4); }
+    .status-pill.warn { color: var(--warn); border-color: rgba(240,180,41,0.4); }
+    .log {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      max-height: 140px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+    .hint { color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+    .playbook {
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .playbook code {
+      color: var(--accent2);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">TO</div>
+      <div>
+        <h1>TokenOptimizer</h1>
+        <div class="sub">Compact agents · metered to your real Grok costs</div>
+      </div>
+    </div>
+    <div class="row">
+      <span id="keyPill" class="status-pill">checking key…</span>
+      <span id="calPill" class="status-pill">calibration —</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Providers</h2>
+      <div id="providers" class="providers"></div>
+      <p class="hint" style="margin: 0.75rem 0 0">
+        Grok is live. Other frontiers share the same compact loop — coming soon after key calibration.
+      </p>
+    </section>
+
+    <div class="grid2">
+      <section class="card">
+        <h2>Session</h2>
+        <div class="field">
+          <label for="profile">Profile</label>
+          <select id="profile"></select>
+        </div>
+        <div class="grid2" style="gap: 0.5rem">
+          <div class="field">
+            <label for="model">Model override</label>
+            <select id="model">
+              <option value="">Profile default</option>
+              <option value="grok-4.5">grok-4.5 (frontier)</option>
+              <option value="grok-4.3">grok-4.3</option>
+              <option value="grok-4.20-0309-non-reasoning">non-reasoning bulk</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="effort">Effort override</label>
+            <select id="effort">
+              <option value="">Profile default</option>
+              <option value="high">high</option>
+              <option value="medium">medium</option>
+              <option value="low">low</option>
+              <option value="off">off</option>
+            </select>
+          </div>
+        </div>
+        <div class="meters" id="meters">
+          <div class="meter"><div class="k">Calls</div><div class="v" id="mCalls">0</div></div>
+          <div class="meter"><div class="k">API tokens</div><div class="v" id="mTok">0</div></div>
+          <div class="meter"><div class="k">API $</div><div class="v" id="mApi">—</div></div>
+          <div class="meter"><div class="k">Est $</div><div class="v" id="mEst">—</div></div>
+        </div>
+        <div class="actions">
+          <button id="btnCalibrate" type="button">Calibrate my Grok key</button>
+          <button id="btnExport" class="secondary" type="button">Export JSONL</button>
+          <button id="btnReset" class="ghost" type="button">Reset session</button>
+        </div>
+        <p class="hint" id="calNote" style="margin-top: 0.75rem">
+          Calibration runs one live probe and compares provider <code>cost_in_usd_ticks</code> to our sheet estimate (target ≥ 99.5%).
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Playbook</h2>
+        <div class="playbook" id="playbook">
+          <div><strong style="color:var(--text)">Design</strong> — profile <code>frontier</code> or model <code>grok-4.5</code> + effort <code>high</code></div>
+          <div><strong style="color:var(--text)">Ship volume</strong> — profile <code>production</code> (default)</div>
+          <div><strong style="color:var(--text)">Bulk</strong> — profile <code>bulk</code> after the idea works</div>
+          <div><strong style="color:var(--text)">Cost truth</strong> — <code>usd = cost_in_usd_ticks / 1e10</code></div>
+        </div>
+        <div class="field" style="margin-top: 1rem">
+          <label>Cost scale</label>
+          <div class="reply" id="costTruth" style="min-height: auto; font-family: var(--mono); font-size: 0.8rem;">—</div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>Chat</h2>
+      <div class="field">
+        <label for="prompt">Message</label>
+        <textarea id="prompt" placeholder="Ask Grok… (context is compacted automatically)">In one short sentence, what is double taxation in a checkout total?</textarea>
+      </div>
+      <div class="actions">
+        <button id="btnSend" type="button">Send</button>
+      </div>
+      <div class="field" style="margin-top: 1rem">
+        <label>Reply</label>
+        <div class="reply" id="reply">—</div>
+      </div>
+      <div class="field">
+        <label>Last call</label>
+        <div class="log" id="lastCall">—</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Activity</h2>
+      <div class="log" id="log">Ready.</div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const log = (msg) => {
+      const el = $("log");
+      const line = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      el.textContent = (el.textContent === "Ready." ? "" : el.textContent + "\n") + line;
+      el.scrollTop = el.scrollHeight;
+    };
+
+    async function api(path, opts = {}) {
+      const res = await fetch(path, {
+        headers: { "Content-Type": "application/json", ...(opts.headers || {}) },
+        ...opts,
+      });
+      let data;
+      try { data = await res.json(); } catch { data = { ok: false, error: "Invalid JSON from server" }; }
+      return { status: res.status, data };
+    }
+
+    function money(v) {
+      if (v == null || v === undefined) return "—";
+      const n = Number(v);
+      if (Number.isNaN(n)) return "—";
+      return "$" + n.toFixed(8);
+    }
+
+    function renderProviders(list) {
+      const root = $("providers");
+      root.innerHTML = "";
+      (list || []).forEach((p) => {
+        const el = document.createElement("div");
+        const active = p.status === "active";
+        el.className = "chip " + (active ? "active" : "soon");
+        const keyOk = p.key_present;
+        el.innerHTML = `
+          <span class="dot ${active ? (keyOk ? "on" : "off") : "soon"}"></span>
+          <strong>${p.name || p.id}</strong>
+          <span style="color:var(--muted);font-size:0.75rem">${active ? (keyOk ? "active · key ok" : "active · set XAI_API_KEY") : "coming soon"}</span>
+        `;
+        root.appendChild(el);
+      });
+    }
+
+    function fillProfiles(catalog) {
+      const sel = $("profile");
+      const profiles = catalog?.profiles || {};
+      const keys = Object.keys(profiles);
+      const def = catalog?.default_profile || "production";
+      sel.innerHTML = "";
+      keys.forEach((k) => {
+        const opt = document.createElement("option");
+        opt.value = k;
+        const p = profiles[k];
+        opt.textContent = `${k} — ${p.model} (${p.role || ""})`;
+        if (k === def) opt.selected = true;
+        sel.appendChild(opt);
+      });
+    }
+
+    function updateMeters(session, cost) {
+      if (!session) return;
+      $("mCalls").textContent = session.session_calls ?? 0;
+      $("mTok").textContent = session.session_api_total ?? 0;
+      $("mApi").textContent = money(session.session_cost_usd_api);
+      $("mEst").textContent = money(session.session_cost_usd_est);
+      if (cost && cost.within_99_5 != null) {
+        const pill = $("calPill");
+        if (cost.within_99_5) {
+          pill.textContent = `cost match ${(Number(cost.accuracy || 1) * 100).toFixed(2)}%`;
+          pill.className = "status-pill ok";
+        }
+      }
+    }
+
+    async function refresh() {
+      const [{ data: cat }, { data: st }] = await Promise.all([
+        api("/api/catalog"),
+        api("/api/status"),
+      ]);
+      if (cat.ok) {
+        fillProfiles(cat.catalog);
+        const ct = cat.catalog.cost_truth || {};
+        $("costTruth").textContent =
+          `${ct.formula || "usd = cost_in_usd_ticks / 1e10"}\n` +
+          `est: ${ct.est_formula || ""}\n` +
+          `target accuracy: ${ct.target_accuracy ?? 0.995}`;
+      }
+      if (st.ok) {
+        renderProviders(st.providers);
+        const keyPill = $("keyPill");
+        if (st.grok_key_present) {
+          keyPill.textContent = "XAI_API_KEY present";
+          keyPill.className = "status-pill ok";
+          $("btnCalibrate").disabled = false;
+          $("btnSend").disabled = false;
+        } else {
+          keyPill.textContent = "Set XAI_API_KEY in ~/.env";
+          keyPill.className = "status-pill bad";
+          $("btnCalibrate").disabled = true;
+          $("btnSend").disabled = true;
+        }
+        const grok = (st.providers || []).find((p) => p.id === "grok");
+        const calPill = $("calPill");
+        if (grok?.locked && grok.cost_accuracy != null) {
+          calPill.textContent = `calibrated · ${(Number(grok.cost_accuracy) * 100).toFixed(2)}%`;
+          calPill.className = "status-pill ok";
+        } else if (grok?.locked) {
+          calPill.textContent = "calibrated (tokens)";
+          calPill.className = "status-pill ok";
+        } else {
+          calPill.textContent = "not calibrated yet";
+          calPill.className = "status-pill warn";
+        }
+        if (st.cost_usd_ticks?.scale) {
+          $("costTruth").textContent += `\nticks scale locked: ${st.cost_usd_ticks.scale} (${st.cost_usd_ticks.status || ""})`;
+        }
+      }
+      const { data: sess } = await api("/api/session");
+      if (sess.ok) updateMeters(sess.session);
+    }
+
+    $("btnCalibrate").onclick = async () => {
+      $("btnCalibrate").disabled = true;
+      log("Calibrating against live Grok usage…");
+      const { data } = await api("/api/calibrate", {
+        method: "POST",
+        body: JSON.stringify({ profile: $("profile").value, persist: true }),
+      });
+      $("btnCalibrate").disabled = false;
+      if (!data.ok) {
+        log("Calibrate failed: " + (data.error || "unknown"));
+        $("calPill").textContent = "calibration failed";
+        $("calPill").className = "status-pill bad";
+        return;
+      }
+      const c = data.calibration || {};
+      log(`Calibrate OK · model=${c.model} api=${money(c.api_cost_usd)} est=${money(c.est_cost_usd)} acc=${c.accuracy}`);
+      $("calNote").textContent =
+        `Last probe: ticks=${c.cost_in_usd_ticks} · api=${money(c.api_cost_usd)} · est=${money(c.est_cost_usd)} · within_99_5=${c.within_99_5}`;
+      updateMeters(data.session, c.cost);
+      await refresh();
+    };
+
+    $("btnSend").onclick = async () => {
+      const message = $("prompt").value.trim();
+      if (!message) return;
+      $("btnSend").disabled = true;
+      $("reply").textContent = "…";
+      log("Sending…");
+      const body = {
+        message,
+        profile: $("profile").value,
+      };
+      if ($("model").value) body.model = $("model").value;
+      if ($("effort").value) body.effort = $("effort").value;
+      const { data } = await api("/api/chat", {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+      $("btnSend").disabled = false;
+      if (!data.ok) {
+        $("reply").textContent = "Error: " + (data.error || "unknown");
+        log("Chat failed: " + (data.error || "unknown"));
+        return;
+      }
+      const r = data.result;
+      $("reply").textContent = r.text || "(empty)";
+      $("lastCall").textContent = JSON.stringify(
+        {
+          model: r.model,
+          profile: r.profile,
+          seconds: r.seconds,
+          usage: r.usage,
+          cost_usd_api: r.cost_usd_api,
+          cost_usd_est: r.cost_usd_est,
+        },
+        null,
+        2
+      );
+      updateMeters(data.session, data.cost);
+      log(`Chat OK · ${r.model} · ${r.api_total} tok · api ${money(r.cost_usd_api)}`);
+    };
+
+    $("btnReset").onclick = async () => {
+      await api("/api/session/reset", { method: "POST", body: "{}" });
+      updateMeters({ session_calls: 0, session_api_total: 0, session_cost_usd_api: 0, session_cost_usd_est: 0 });
+      $("reply").textContent = "—";
+      $("lastCall").textContent = "—";
+      log("Session reset");
+    };
+
+    $("btnExport").onclick = async () => {
+      const { data } = await api("/api/session/export", { method: "POST", body: "{}" });
+      if (!data.ok) {
+        log("Export: " + (data.error || "failed"));
+        return;
+      }
+      log(`Exported ${data.calls_written} calls → ${data.path}`);
+    };
+
+    $("profile").onchange = () => log("Profile → " + $("profile").value);
+
+    refresh().catch((e) => log("Init error: " + e));
+  </script>
+</body>
+</html>

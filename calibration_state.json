@@ -1,0 +1,243 @@
+{
+  "target_accuracy": 0.995,
+  "updated_at": "2026-07-16T00:11:42Z",
+  "dashboard_baseline": 251203,
+  "token_accuracy": 1.0,
+  "cost_usd_ticks": {
+    "scale": 10000000000,
+    "scale_note": "usd = cost_in_usd_ticks / 10000000000",
+    "status": "locked",
+    "verified_model": "grok-4.3",
+    "customer_probe": {
+      "cost_in_usd_ticks": 3959000,
+      "api_cost_usd": 0.0003959,
+      "est_cost_usd": 0.00039590000000000003,
+      "accuracy": 0.9999999999999999,
+      "within_99_5": true
+    }
+  },
+  "reconciliation": {
+    "dashboard_total": 251203,
+    "accounted_total": 251203,
+    "unaccounted": 0,
+    "chain": [
+      {
+        "label": "confirmed_baseline_after_90pct_cal",
+        "total": 61627,
+        "delta": 0
+      },
+      {
+        "label": "innovate_ab_71pct_attempt",
+        "api_total": 43312,
+        "running": 104939
+      },
+      {
+        "label": "innovate_ab_74pct_attempt",
+        "api_total": 47005,
+        "running": 151944
+      },
+      {
+        "label": "innovate_hybrid_87pct_attempt",
+        "api_total": 42182,
+        "running": 194126
+      },
+      {
+        "label": "innovate_pass_91pct_full_reasoning",
+        "api_total": 56636,
+        "running": 250762
+      },
+      {
+        "label": "reasoning_effort_api_probe",
+        "api_total": 441,
+        "running": 251203
+      }
+    ],
+    "note": "100% match. All post-61627 usage is innovate-mode A/B experiments + one tiny API probe."
+  },
+  "innovate_profile": {
+    "status": "locked",
+    "total_save_pct": 91.3,
+    "prompt_save_pct": 97.3,
+    "model": "grok-4.3",
+    "reasoning_effort": "high",
+    "naive_tokens": 52119,
+    "innovate_tokens": 4517,
+    "method": "OptimizedLoop(innovate=True) + compact context + one deep consult/case"
+  },
+  "savings_playbook": {
+    "target_pct": 90,
+    "bulk_path": {
+      "total_save_pct": 93.4,
+      "efficient_model": "grok-4.20-0309-non-reasoning"
+    },
+    "innovate_path": {
+      "total_save_pct": 91.3,
+      "model": "grok-4.3",
+      "reasoning": "high"
+    }
+  },
+  "providers": {
+    "grok": {
+      "provider": "grok",
+      "model": "grok-4.3",
+      "status": "locked",
+      "token_accuracy": 1.0,
+      "cost_accuracy": 0.9999999999999999,
+      "pin": 1.25,
+      "pout": 2.5,
+      "pin_cached": 0.2,
+      "price_source": "xai-models-api",
+      "last_api_total": 342,
+      "last_est_cost_usd": 0.00039590000000000003,
+      "dashboard_total": null,
+      "notes": [
+        "Customer calibrate profile=production",
+        "cost_in_usd_ticks=3959000 scale=10000000000",
+        "api_cost=0.0003959 est_cost=0.00039590000000000003",
+        "within_99_5=True"
+      ],
+      "updated_at": "2026-07-16T00:11:42Z"
+    },
+    "openai": {
+      "provider": "openai",
+      "status": "pending_key",
+      "model": "gpt-4o-mini"
+    },
+    "anthropic": {
+      "provider": "anthropic",
+      "status": "pending_key",
+      "model": "claude-sonnet-4-20250514"
+    },
+    "gemini": {
+      "provider": "gemini",
+      "status": "pending_key",
+      "model": "gemini-2.0-flash"
+    }
+  },
+  "formula": {
+    "grok": "uncached*pin + cached*pin_cached + (completion+reasoning)*pout",
+    "grok_usd_ticks": "usd = cost_in_usd_ticks / 1e10"
+  },
+  "product": {
+    "version": "0.1.0",
+    "ready": true,
+    "default_provider": "grok",
+    "default_profile": "production",
+    "design_profile": "frontier",
+    "volume_profiles": [
+      "production",
+      "bulk"
+    ],
+    "cost_truth": {
+      "field": "cost_in_usd_ticks",
+      "ticks_per_usd": 10000000000,
+      "formula": "usd = cost_in_usd_ticks / 1e10",
+      "est_formula": "uncached*pin + cached*pin_cached + (completion+reasoning)*pout",
+      "target_accuracy": 0.995
+    },
+    "profiles": {
+      "frontier": {
+        "model": "grok-4.5",
+        "reasoning_mode": "innovate",
+        "notes": "Design / hard debug on grok-4.5. Aggressive compact; full reasoning.",
+        "role": "design",
+        "ctx_max": 140,
+        "hist_keep": 2
+      },
+      "innovate": {
+        "model": "grok-4.3",
+        "reasoning_mode": "innovate",
+        "notes": "Full reasoning + max compression on 4.3. Invent / hard debug at lower $.",
+        "role": "design",
+        "ctx_max": 160,
+        "hist_keep": 2
+      },
+      "production": {
+        "model": "grok-4.3",
+        "reasoning_mode": "balanced",
+        "notes": "Calibrated production path. Default for customer volume.",
+        "role": "volume",
+        "ctx_max": 120,
+        "hist_keep": 1
+      },
+      "bulk": {
+        "model": "grok-4.20-0309-non-reasoning",
+        "reasoning_mode": "off",
+        "notes": "Max savings; no reasoning tax. Use after the idea works.",
+        "role": "volume",
+        "ctx_max": 100,
+        "hist_keep": 1
+      }
+    },
+    "providers": [
+      {
+        "id": "grok",
+        "name": "xAI Grok",
+        "status": "active",
+        "profiles": [
+          "frontier",
+          "innovate",
+          "production",
+          "bulk"
+        ],
+        "models": [
+          "grok-4.5",
+          "grok-4.3",
+          "grok-4.20-0309-non-reasoning"
+        ],
+        "calibrate": "GrokSession.calibrate() \u2014 live ticks vs sheet $",
+        "dashboard": "console.x.ai \u2192 Usage (API)"
+      },
+      {
+        "id": "openai",
+        "name": "OpenAI",
+        "status": "coming_soon",
+        "profiles": [],
+        "note": "Same compact loop; calibration pending customer keys."
+      },
+      {
+        "id": "anthropic",
+        "name": "Anthropic Claude",
+        "status": "coming_soon",
+        "profiles": [],
+        "note": "Same compact loop; calibration pending customer keys."
+      },
+      {
+        "id": "gemini",
+        "name": "Google Gemini",
+        "status": "coming_soon",
+        "profiles": [],
+        "note": "Same compact loop; calibration pending customer keys."
+      }
+    ],
+    "playbook": {
+      "design": "profile=frontier (or chat(model='grok-4.5', effort='high'))",
+      "ship": "profile=production",
+      "bulk": "profile=bulk after the idea works",
+      "customer_onboard": [
+        "Set XAI_API_KEY",
+        "session = GrokSession(profile='production')",
+        "session.calibrate()  # locks to their live $ ticks",
+        "optional: session.verify_dashboard(before, after)"
+      ]
+    }
+  },
+  "xai_matrix": {
+    "updated_at": "2026-07-16T00:20:02Z",
+    "script": "ab_full_xai_matrix.py",
+    "result_file": "ab_full_xai_matrix_last.json",
+    "summary": {
+      "total": 9,
+      "ok": 9,
+      "failed": 0,
+      "tick_metered_calls": 7,
+      "tick_within_99_5": 7,
+      "ticks_per_usd": 10000000000
+    },
+    "benefit": {
+      "text_and_build": "full compact + ticks",
+      "imagine": "partial compact prompts; flat image_price",
+      "voice_tts": "partial compact chars before /tts"
+    }
+  }
+}

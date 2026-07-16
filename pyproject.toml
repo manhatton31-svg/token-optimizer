@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "token-optimizer"
+version = "0.2.0"
+description = "Cut multi-turn Grok agent tokens ~90%+ and meter cost to live xAI ticks. OpenAI/Anthropic/Gemini coming soon."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "TokenOptimizer contributors" },
+]
+keywords = [
+    "agents",
+    "llm",
+    "tokens",
+    "context",
+    "compaction",
+    "budget",
+    "grok",
+    "xai",
+    "openai",
+    "anthropic",
+    "gemini",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+grok = ["openai>=1.0"]
+ui = ["openai>=1.0"]
+dev = ["openai>=1.0"]
+all = ["openai>=1.0"]
+
+[project.scripts]
+token-optimizer-ui = "ui.server:main"
+token-optimizer-onboard = "onboard:main"
+
+[project.urls]
+Homepage = "https://github.com/YOUR_ORG/token-optimizer"
+Documentation = "https://github.com/YOUR_ORG/token-optimizer#readme"
+Repository = "https://github.com/YOUR_ORG/token-optimizer"
+Issues = "https://github.com/YOUR_ORG/token-optimizer/issues"
+Savings = "https://github.com/YOUR_ORG/token-optimizer/blob/main/SAVINGS.md"
+
+[tool.setuptools]
+py-modules = ["onboard", "calibrate"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["token_optimizer*", "ui*"]
+exclude = ["tests*", "__pycache__*", "examples*", "matrix_artifacts*"]
+
+[tool.setuptools.package-data]
+ui = ["static/*"]
