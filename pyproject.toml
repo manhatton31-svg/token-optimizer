@@ -52,11 +52,11 @@ token-optimizer-ui = "ui.server:main"
 token-optimizer-onboard = "onboard:main"
 
 [project.urls]
-Homepage = "https://github.com/YOUR_ORG/token-optimizer"
-Documentation = "https://github.com/YOUR_ORG/token-optimizer#readme"
-Repository = "https://github.com/YOUR_ORG/token-optimizer"
-Issues = "https://github.com/YOUR_ORG/token-optimizer/issues"
-Savings = "https://github.com/YOUR_ORG/token-optimizer/blob/main/SAVINGS.md"
+Homepage = "https://github.com/manhatton31-svg/token-optimizer"
+Documentation = "https://github.com/manhatton31-svg/token-optimizer#readme"
+Repository = "https://github.com/manhatton31-svg/token-optimizer"
+Issues = "https://github.com/manhatton31-svg/token-optimizer/issues"
+Savings = "https://github.com/manhatton31-svg/token-optimizer/blob/main/SAVINGS.md"
 
 [tool.setuptools]
 py-modules = ["onboard", "calibrate"]

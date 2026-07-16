@@ -1,5 +1,7 @@
 # Grok savings specifications
 
+Repo: https://github.com/manhatton31-svg/token-optimizer
+
 **Baseline (“naive”):** multi-turn agent that resends full history, full tool JSON, and full source files every turn.
 
 **Efficient:** `GrokSession` / `TokenOptimizer.prepare_turn` compact context + short emits + profile model/effort.

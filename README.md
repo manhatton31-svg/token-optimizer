@@ -139,6 +139,12 @@ Live (spends real $): `python ab_full_xai_matrix.py`
 - [CHANGELOG.md](CHANGELOG.md) — releases  
 - [LAUNCH.md](LAUNCH.md) — remaining launch checklist / prompt stream  
 
+## Links
+
+- Repo: https://github.com/manhatton31-svg/token-optimizer
+- Issues: https://github.com/manhatton31-svg/token-optimizer/issues
+- Savings: [SAVINGS.md](SAVINGS.md)
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

@@ -39,7 +39,7 @@ Requirements:
 Prepare the package for a real public repo.
 
 Requirements:
-1. Replace YOUR_ORG in pyproject.toml / README / SAVINGS links with the real GitHub org/repo I provide: <ORG/REPO>.
+1. Replace YOUR_ORG in pyproject.toml / README / SAVINGS links with: manhatton31-svg/token-optimizer.
 2. pip install -e ".[all]" and verify: python -m token_optimizer ; python -c "import ui.server, onboard".
 3. Run: python test_grok_session.py ; python test_ui_api.py ; python test_diy_loop.py ; python examples/quickstart_demo.py --mock
 4. Confirm no API keys in any test output.
@@ -55,11 +55,11 @@ Requirements:
 Connect the local repo to GitHub and publish the beta.
 
 Requirements:
-1. Use remote: git@github.com:<ORG>/token-optimizer.git (or HTTPS I provide).
+1. Use remote: git@github.com:manhatton31-svg/token-optimizer.git (or HTTPS).
 2. Create repo if needed via gh (public), default branch main.
 3. Push main. Do not force-push.
 4. Add topics: grok, xai, agents, tokens, llm.
-5. Paste the public clone URL and: pip install "git+https://github.com/<ORG>/token-optimizer.git#egg=token-optimizer[grok]"
+5. Paste the public clone URL and: pip install "git+https://github.com/manhatton31-svg/token-optimizer.git#egg=token-optimizer[grok]"
 ```
 
 **Exit:** stranger can clone + install from GitHub.
