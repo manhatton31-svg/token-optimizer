@@ -2,6 +2,11 @@
 
 ## 0.2.0 — 2026-07-16 (beta, Grok launch)
 
+### PyPI
+- Distribution name: **`grok-token-optimizer`** (`token-optimizer` was already taken on PyPI)
+- Import path unchanged: `from token_optimizer import GrokSession`
+- Install: `pip install "grok-token-optimizer[grok]"`
+
 ### Ready for tryouts
 - **GrokSession** profiles: `frontier` | `innovate` | `production` | `bulk`
 - Per-call `model=` / `effort=` on `chat` / `chat_stream`

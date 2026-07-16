@@ -17,7 +17,7 @@ I’m inviting a small set of people to try **TokenOptimizer** — a Python libr
 2. Install:
 
 ```bash
-pip install "git+https://github.com/manhatton31-svg/token-optimizer.git#egg=token-optimizer[grok]"
+pip install "grok-token-optimizer[grok]"
 ```
 
 3. Calibrate + one chat:
@@ -26,7 +26,7 @@ pip install "git+https://github.com/manhatton31-svg/token-optimizer.git#egg=toke
 python -c "from token_optimizer import GrokSession; s=GrokSession(profile='production'); print(s.calibrate())"
 ```
 
-Or:
+Or from source:
 
 ```bash
 git clone https://github.com/manhatton31-svg/token-optimizer.git

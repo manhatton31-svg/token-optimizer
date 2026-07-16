@@ -11,7 +11,8 @@
 **Grok is active now.** OpenAI / Anthropic / Gemini are marked coming soon.
 
 ```bash
-pip install "git+https://github.com/manhatton31-svg/token-optimizer.git#egg=token-optimizer[grok]"
+pip install "grok-token-optimizer[grok]"
+# or: pip install "git+https://github.com/manhatton31-svg/token-optimizer.git#egg=grok-token-optimizer[grok]"
 ```
 
 You need an **`XAI_API_KEY`** (console.x.ai → `~/.env`). Then:
@@ -34,7 +35,7 @@ Repo: https://github.com/manhatton31-svg/token-optimizer
 
 Naive Grok agents resend full dumps every turn. TokenOptimizer targets 90%+ token cut + meters $ to real xAI ticks. Grok live; others soon.
 
-pip install "git+https://github.com/manhatton31-svg/token-optimizer.git#egg=token-optimizer[grok]"
+pip install "grok-token-optimizer[grok]"
 (needs XAI_API_KEY)
 
 Seeking 3 design partners → github.com/manhatton31-svg/token-optimizer

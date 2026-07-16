@@ -4,7 +4,7 @@ Use these for outreach, onboarding copy, and “who is this for?” slides.
 
 | # | Persona | Pain | First command | Then |
 |---|---------|------|---------------|------|
-| 1 | **Agent builder** (custom tool loop) | History + tool JSON explode token count | `pip install "git+https://github.com/manhatton31-svg/token-optimizer.git#egg=token-optimizer[grok]"` | Wrap loop with `GrokSession` + `tool_compact`; `calibrate()` once |
+| 1 | **Agent builder** (custom tool loop) | History + tool JSON explode token count | `pip install "grok-token-optimizer[grok]"` | Wrap loop with `GrokSession` + `tool_compact`; `calibrate()` once |
 | 2 | **Grok Build / coding-agent user** | Resends whole files every repair turn | `python examples/quickstart_demo.py` | `GrokSession(profile="bulk", model="grok-build-0.1")` or `innovate` for hard bugs |
 | 3 | **Indie SaaS on xAI** | Unpredictable Grok bill; no $ truth | `python -c "from token_optimizer import GrokSession; print(GrokSession().calibrate())"` | Ship `production` profile; watch `cost_usd_api` vs est ≥99.5% |
 | 4 | **Heavy innovator / researcher** | Wants full reasoning *and* savings | `GrokSession(profile="innovate")` then `calibrate()` | Design on `frontier` (4.5); volume on `production`/`bulk` |
@@ -16,7 +16,7 @@ Use these for outreach, onboarding copy, and “who is this for?” slides.
 
 ### 1. Agent builder
 ```bash
-pip install "git+https://github.com/manhatton31-svg/token-optimizer.git#egg=token-optimizer[grok]"
+pip install "grok-token-optimizer[grok]"
 ```
 
 ### 2. Grok Build / coding agent

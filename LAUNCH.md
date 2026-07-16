@@ -91,20 +91,21 @@ Requirements:
 
 ---
 
-## Prompt 6 — Optional PyPI (after 3 external installs)
+## Prompt 6 — PyPI
 
+- [x] Name `token-optimizer` taken → use **`grok-token-optimizer`**
+- [x] Build sdist+wheel; twine check PASSED
+- [x] README / AGENTS / announce prefer `pip install "grok-token-optimizer[grok]"`
+- [ ] Upload (needs PyPI API token in env — not present yet)
+- [ ] Verify: `pip install grok-token-optimizer==0.2.0 && python -m token_optimizer`
+
+**Upload when ready** (never paste token into chat):
+
+```powershell
+$env:TWINE_USERNAME = "__token__"
+$env:TWINE_PASSWORD = "pypi-..."   # create at https://pypi.org/manage/account/token/
+# then say: upload to pypi now
 ```
-Publish token-optimizer 0.2.0 to PyPI only after I confirm.
-
-Requirements:
-1. Confirm pyproject name is free / correct.
-2. Build sdist+wheel; twine check.
-3. Upload with credentials I provide via env (never echo tokens).
-4. Verify: pip install token-optimizer==0.2.0 && python -m token_optimizer
-5. Update README install to prefer PyPI.
-```
-
-**Exit:** `pip install token-optimizer` works worldwide.
 
 ---
 

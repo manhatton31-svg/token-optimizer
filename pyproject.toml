@@ -3,7 +3,7 @@ requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "token-optimizer"
+name = "grok-token-optimizer"
 version = "0.2.0"
 description = "Cut multi-turn Grok agent tokens ~90%+ and meter cost to live xAI ticks. OpenAI/Anthropic/Gemini coming soon."
 readme = "README.md"

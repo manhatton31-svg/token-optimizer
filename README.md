@@ -27,6 +27,10 @@ cp .env.example ~/.env   # then edit XAI_API_KEY=...
 ### 2. Install
 
 ```bash
+# PyPI (distribution name; import stays token_optimizer)
+pip install "grok-token-optimizer[grok]"
+
+# From source (dev)
 pip install -e ".[grok]"
 # or: pip install -e ".[all]"
 ```

@@ -7,7 +7,8 @@ Use TokenOptimizer so multi-turn Grok agent loops save **≥90% tokens** vs rese
 ## Install
 
 ```bash
-pip install -e ".[grok]"
+pip install "grok-token-optimizer[grok]"
+# or from source: pip install -e ".[grok]"
 # requires XAI_API_KEY in ~/.env or environment
 ```
 
