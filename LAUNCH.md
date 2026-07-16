@@ -81,15 +81,11 @@ Requirements:
 
 ---
 
-## Prompt 5 — Soft launch copy + invite list
+## Prompt 5 — Soft launch copy + invite list ✅
 
-```
-Write launch assets (markdown only, no deploy):
-
-1. LAUNCH_ANNOUNCE.md — 150-word post for X/Discord: problem, 90%+ claim with SAVINGS link, Grok-only active, install one-liner, "need XAI_API_KEY", call for 3 design partners.
-2. EMAIL_BETA.md — short email to invitees with install + calibrate + "reply with within_99_5 and one agent loop result".
-3. List 5 target user personas (agent builder, Grok Build user, indie SaaS, etc.) with the one command each should run first.
-```
+- [x] `LAUNCH_ANNOUNCE.md` — X/Discord post + short variant  
+- [x] `EMAIL_BETA.md` — invite + follow-up  
+- [x] `PERSONAS.md` — 5 personas with first commands  
 
 **Exit:** you can paste announce + email today.
 
@@ -130,4 +126,10 @@ Requirements:
 
 ## Current next prompt
 
-→ **Prompt 1 — Git foundation** (copy-paste the fenced block under Prompt 1).
+→ **Prompt 6 — Optional PyPI** (after 3 external installs), **or** send announce + 3 beta emails now.
+
+**Soft-launch gate (no PyPI required):**
+- [x] Public GitHub repo + CI green  
+- [x] Announce + email + personas written  
+- [ ] You post `LAUNCH_ANNOUNCE.md` and send `EMAIL_BETA.md` to 3 people  
+- [ ] Collect 3× `within_99_5` replies
